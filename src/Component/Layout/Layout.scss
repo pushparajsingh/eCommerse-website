@@ -1,0 +1,39 @@
+.Sidebar {
+  border: 1px solid red;
+}
+.header-menu {
+  color: rgb(10, 10, 10);
+  text-decoration: none;
+  margin-right: 1rem;
+}
+.header-span {
+  padding: 0.7rem;
+  background-color: rgba(245, 242, 235, 0.548);
+  border-radius: 25px;
+  color: black;
+}
+.header-colors {
+  padding: 0.7rem;
+  background-color: rgb(247, 242, 248);
+  border-radius: 25px;
+  color: black;
+}
+.sideBar {
+  width: 25%;
+  color: rgb(223, 202, 202);
+  background-color: rgb(145, 143, 107);
+  min-height: 91.3vh;
+}
+.content {
+  width: 75%;
+}
+.listStyle li {
+  list-style: none;
+  font-size: 2rem;
+  color: white;
+  transition: all 0.5s ease-out;
+}
+
+.listStyle li:hover {
+  color: black;
+}
