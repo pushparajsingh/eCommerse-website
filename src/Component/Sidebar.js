@@ -1,15 +1,14 @@
 import React from "react";
+import { Button } from "react-bootstrap";
 
 const Sidebar = () => {
   return (
     <div className="float-start sideBar">
-      <div className="mt-5">
-        <ul className="listStyle">
-          <li>Home</li>
-          <li>Feature</li>
-          <li>Pricising</li>
-        </ul>
-      </div>
+      <h3 className="filter">Filter By Name</h3>
+      <input type={"text"} className="inputbox" />
+      <Button variant="secondary" className="searchBtn">
+        Search
+      </Button>
     </div>
   );
 };

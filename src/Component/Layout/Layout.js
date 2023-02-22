@@ -8,8 +8,9 @@ const Layout = ({ children }) => {
   return (
     <>
       <Header />
-      <Sidebar />
-      <div className="float-end content">{children}</div>
+      <div>
+        <div>{children}</div>
+      </div>
     </>
   );
 };

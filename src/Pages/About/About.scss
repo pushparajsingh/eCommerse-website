@@ -1,0 +1,23 @@
+@import url("https://fonts.googleapis.com/css2?family=Catamaran:wght@300&family=Charm:wght@700&family=Dancing+Script&family=Kalam:wght@300&display=swap");
+.center-overview {
+  width: 80%;
+  margin: 4rem auto;
+  font-family: "Catamaran", sans-serif;
+  font-size: 1.5rem;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  div {
+    text-indent: 200px;
+    text-align: justify;
+  }
+  h2 {
+    text-align: center;
+    font-size: 2.2rem;
+    font-weight: bold;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgb(17, 17, 15);
+    margin-bottom: 1.5rem;
+  }
+}

@@ -1,16 +1,25 @@
 import React from "react";
-import { Navbar, Nav, Container } from "react-bootstrap";
+import {
+  Navbar,
+  Nav,
+  Container,
+  Dropdown,
+  DropdownButton,
+  ButtonGroup,
+} from "react-bootstrap";
 import DMART from "../Assert/Image/DMART.png";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { AiOutlineShoppingCart } from "react-icons/ai";
 
 const Header = () => {
   const location = useLocation();
-  // console.log(333, location);
+  const navigate = useNavigate();
+
   return (
     <>
       <Navbar bg="warning" variant="dark">
         <Container>
-          <Navbar.Brand href="#home">
+          <Navbar.Brand href="#home" onClick={() => navigate("/")}>
             <img
               src={DMART}
               alt="DMART"
@@ -20,18 +29,71 @@ const Header = () => {
             />
           </Navbar.Brand>
           <Nav className="me-auto">
-            <Link to={""} className="header-menu">
-              <span className={location.pathname == "/" ? "header-colors" : ""}>
+            <Link to={"/"} className="header-menu">
+              <span
+                className={
+                  location.pathname == "/" ? "header-colors" : "header-span"
+                }
+              >
                 Home
               </span>
             </Link>
-            <Link to={""} className="header-menu">
-              <span className="header-span">Features</span>
+            <Link to={"/product"} className="header-menu">
+              <span
+                className={
+                  location.pathname == "/product"
+                    ? "header-colors"
+                    : "header-span"
+                }
+              >
+                Product
+              </span>
             </Link>
-            <Link to={""} className="header-menu">
-              <span className="header-span"> Pricing</span>
+            <Link to={"/aboutUs"} className="header-menu">
+              <span
+                className={
+                  location.pathname == "/aboutUs"
+                    ? "header-colors"
+                    : "header-span"
+                }
+              >
+                {" "}
+                About Us
+              </span>
             </Link>
           </Nav>
+          <span
+            className="p-1 bg-danger rounded-circle counter"
+            style={{ cursor: "pointer" }}
+          >
+            1
+          </span>
+          <AiOutlineShoppingCart
+            className="display-6"
+            style={{ cursor: "pointer", marginRight: "1rem" }}
+            onClick={() => navigate("/cartProduct")}
+          />
+          <DropdownButton
+            as={ButtonGroup}
+            key={"Warning"}
+            id={`dropdown-variants-Warning`}
+            variant={"Secondary".toLowerCase()}
+            title={"Profile"}
+          >
+            <Dropdown.Item eventKey="1">Home</Dropdown.Item>
+            <Dropdown.Item eventKey="2">Another action</Dropdown.Item>
+            <Dropdown.Divider />
+            <Dropdown.Item eventKey="3" onClick={() => navigate("/signUpForm")}>
+              Sign Up
+            </Dropdown.Item>
+            <Dropdown.Divider />
+            <Dropdown.Item
+              eventKey="4"
+              onClick={() => navigate("/loginInForm")}
+            >
+              Login
+            </Dropdown.Item>
+          </DropdownButton>
         </Container>
       </Navbar>
     </>

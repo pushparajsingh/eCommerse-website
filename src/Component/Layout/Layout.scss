@@ -1,6 +1,5 @@
-.Sidebar {
-  border: 1px solid red;
-}
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script&family=Kalam:wght@300&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Catamaran:wght@300&family=Dancing+Script&family=Kalam:wght@300&display=swap");
 .header-menu {
   color: rgb(10, 10, 10);
   text-decoration: none;
@@ -19,21 +18,69 @@
   color: black;
 }
 .sideBar {
-  width: 25%;
+  width: 22%;
   color: rgb(223, 202, 202);
   background-color: rgb(145, 143, 107);
   min-height: 91.3vh;
 }
 .content {
-  width: 75%;
+  width: 78%;
+  // border: 2px solid red;
+  height: 91vh;
+  overflow-y: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
 }
+
 .listStyle li {
   list-style: none;
   font-size: 2rem;
   color: white;
+  cursor: pointer;
+  margin-right: 2rem;
   transition: all 0.5s ease-out;
+  text-align: center;
 }
 
 .listStyle li:hover {
   color: black;
+  padding: 5px;
+  font-size: 2.5rem;
+}
+#Center_Image {
+  margin: 1rem auto;
+  background-size: cover;
+}
+
+.inputbox {
+  border-radius: 25px;
+  margin: 2rem auto 0rem 1rem;
+  padding: 1rem;
+  font-size: 2.05rem;
+  height: 3rem;
+  width: 17rem;
+  font-family: "Dancing Script", cursive;
+  text-transform: capitalize;
+}
+.filter {
+  margin-left: 2rem;
+  margin-top: 2rem;
+  margin-bottom: -1rem;
+  font-family: "Kalam", cursive;
+  font-size: 2rem;
+  font-weight: bolder;
+}
+.cardSize {
+  margin: 0.2rem;
+}
+.searchBtn {
+  margin-left: 6.5rem;
+  margin-top: 1rem;
+}
+.counter {
+  margin-right: -1rem;
+  margin-top: 0.5rem;
+  z-index: 12;
+  user-select: none;
 }
