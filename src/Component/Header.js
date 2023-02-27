@@ -89,9 +89,15 @@ const Header = () => {
             <Dropdown.Divider />
             <Dropdown.Item
               eventKey="4"
-              onClick={() => navigate("/loginInForm")}
+              onClick={() => navigate("/loginInUserForm")}
             >
-              Login
+              User Login
+            </Dropdown.Item>
+            <Dropdown.Item
+              eventKey="4"
+              onClick={() => navigate("/loginInAdminForm")}
+            >
+              Admin Login
             </Dropdown.Item>
           </DropdownButton>
         </Container>

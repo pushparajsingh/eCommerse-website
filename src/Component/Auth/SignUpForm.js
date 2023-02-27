@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import "./Auth.scss";
 import { Button } from "react-bootstrap";
-import { useDispatch } from "react-redux";
-import { addPost } from "../../Redux/Slice/ECommerseSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { signUp } from "../../Redux/Slice/UserSlice";
 
 const SignupSchema = Yup.object().shape({
   firstName: Yup.string()
@@ -13,13 +13,16 @@ const SignupSchema = Yup.object().shape({
     .required("Required"),
   email: Yup.string().email("Invalid email").required("Required"),
   password: Yup.string().required("Password is required"),
-  passwordConfirmation: Yup.string()
+  cPassword: Yup.string()
     .oneOf([Yup.ref("password"), null], "Passwords must match")
     .required("Confirm Password is required"),
 });
 
 const SignUpForm = () => {
   const dispatch = useDispatch();
+  // const cretePost = useSelector((state) => state?.users?.createPost);
+  // const error = useSelector((state) => state?.users?.error);
+  const isLoading = useSelector((state) => state?.users?.loading);
 
   return (
     <div className="w-25 m-auto">
@@ -36,19 +39,17 @@ const SignUpForm = () => {
             firstName: "",
             email: "",
             password: "",
-            passwordConfirmation: "",
+            cPassword: "",
           }}
           validationSchema={SignupSchema}
           onSubmit={(values) => {
-            // same shape as initial values
-            dispatch(addPost(values));
-            // console.log(values);
+            dispatch(signUp(values));
           }}
         >
           {({ errors, touched }) => (
             <div>
               <Form>
-                <div class="mb-3">
+                <div className="mb-3">
                   <Field
                     name="firstName"
                     placeholder="First Name"
@@ -58,7 +59,7 @@ const SignUpForm = () => {
                     <div>{errors.firstName}</div>
                   ) : null}
                 </div>
-                <div class="mb-3">
+                <div className="mb-3">
                   <Field
                     name="email"
                     type="email"
@@ -69,7 +70,7 @@ const SignUpForm = () => {
                     <div>{errors.email}</div>
                   ) : null}
                 </div>
-                <div class="mb-3">
+                <div className="mb-3">
                   <Field
                     name="password"
                     type="password"
@@ -82,22 +83,22 @@ const SignUpForm = () => {
                 </div>
                 <div className="mb-3">
                   <Field
-                    name="passwordConfirmation"
+                    name="cPassword"
                     type="password"
                     placeholder="Confirm Password"
                     className="form-control"
                   />
-                  {errors.passwordConfirmation &&
-                  touched.passwordConfirmation ? (
-                    <div>{errors.passwordConfirmation}</div>
+                  {errors.cPassword && touched.cPassword ? (
+                    <div>{errors.cPassword}</div>
                   ) : null}
                 </div>
                 <Button
                   type="submit"
                   variant="warning"
                   className="btn-Posining"
+                  disabled={isLoading}
                 >
-                  Submit
+                  {isLoading ? "Loading..." : "Submit"}
                 </Button>
               </Form>
             </div>

@@ -73,6 +73,10 @@
 }
 .cardSize {
   margin: 0.2rem;
+  width: 17rem;
+  p {
+    text-overflow: ellipsis;
+  }
 }
 .searchBtn {
   margin-left: 6.5rem;
