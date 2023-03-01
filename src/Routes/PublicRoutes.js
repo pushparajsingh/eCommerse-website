@@ -2,7 +2,6 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Layout from "../Component/Layout/Layout";
 import CartProduct from "../Pages/CartProduct/CartProduct";
-import Home from "../Pages/Product/Product";
 import SignUpForm from "../Component/Auth/SignUpForm";
 import SignInForm from "../Component/Auth/SignInForm";
 import Product from "../Pages/Product/Product";
@@ -18,8 +17,8 @@ const PublicRoutes = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/Product" element={<Product />} />
         <Route path="/signUpForm" element={<SignUpForm />} />
-        <Route path="/loginInUserForm" element={<SignInForm />} />
-        <Route path="/loginInAdminForm" element={<SignInForm />} />
+        <Route path="/logInUserForm" element={<SignInForm />} />
+        <Route path="/logInAdminForm" element={<SignInForm />} />
         <Route path="/aboutUs" element={<About />} />
         <Route path="/cartProduct" element={<CartProduct />} />
         <Route path="/payment" element={<PaymentPage />} />

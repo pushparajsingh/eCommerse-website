@@ -2,14 +2,18 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Sidebar from "../../Component/Sidebar";
 import { getEcommerseProduct } from "../../Redux/Slice/UserSlice";
-import { Button, Row, Col, Card } from "react-bootstrap";
+import { Button, Card } from "react-bootstrap";
 
 const Product = () => {
   const dispatch = useDispatch();
   const getData = useSelector((state) => state?.users?.allUserProduct);
   useEffect(() => {
     dispatch(getEcommerseProduct());
-  }, [getData]);
+  }, []);
+
+  const Add_To_Cart = () => {
+    dispatch();
+  };
   return (
     <>
       <Sidebar />
@@ -35,7 +39,9 @@ const Product = () => {
                   <p className="text-nowrap overflow-hidden">
                     &nbsp;&nbsp;{item.description}
                   </p>
-                  <Button variant="secondary">Add To Cart</Button>{" "}
+                  <Button variant="secondary" onClick={() => Add_To_Cart()}>
+                    Add To Cart
+                  </Button>{" "}
                   <Button variant="warning">Buy Now</Button>
                 </Card.Text>
               </Card.Body>

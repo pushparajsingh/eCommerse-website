@@ -5,41 +5,25 @@ import { toast } from "react-toastify";
 export const getEcommerseProduct = createAsyncThunk(
   "get/getEcommerseProduct",
   async () => {
-    const getData = await instance.get("dashGetProduct");
     try {
+      const getData = await instance.get("dashGetProduct");
       if (getData.data.products) {
         return getData.data.products;
       }
-    } catch (error) {
-      console.log(7799, error);
+    } catch (err) {
+      console.log(7799, err);
     }
   }
 );
 
-export const getProduct = createAsyncThunk(
-  "get/getProduct",
-  async (_, { rejectWithValue }) => {
-    try {
-      const response = await instance.get("get");
-      if (response?.data) {
-        return response.data.post;
-      }
-    } catch (error) {
-      console.log("data not get", error.response.data.error);
-      // return rejectWithValue(error.response.data.error);
-    }
-  }
-);
-
-export const SignIn = createAsyncThunk(
-  "post/SignIn",
+export const signInUser = createAsyncThunk(
+  "post/signIn",
   async (data, { rejectWithValue }) => {
-    console.log("SignIn", data);
-    const response = await instance.post("login", data);
     try {
-      console.log(555, response);
+      const response = await instance.post("login", data);
+      console.log("UserSlice");
       if (response.data) {
-        sessionStorage.setItem("Token", JSON.stringify(response.data.token));
+        localStorage.setItem("Token", JSON.stringify(response.data.token));
         toast.success(response.data.success);
         return response.data.token;
       }
@@ -56,11 +40,7 @@ export const signUp = createAsyncThunk(
     try {
       const response = await instance.post("register", data);
       if (response) toast.success(response.data.message);
-      // return response.data.message;
     } catch (err) {
-      // if (!err.response) {
-      //   throw err;
-      // }
       toast.error(err.response.data.error);
       return rejectWithValue(err.response.data.error);
     }
@@ -92,25 +72,14 @@ export const UserSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
-    [getProduct.pending]: (state, action) => {
+    [signInUser.pending]: (state, action) => {
       state.loading = true;
     },
-    [getProduct.fulfilled]: (state, action) => {
-      state.allAdminProduct = action.payload;
-      state.loading = false;
-    },
-    [getProduct.rejected]: (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
-    },
-    [SignIn.pending]: (state, action) => {
-      state.loading = true;
-    },
-    [SignIn.fulfilled]: (state, action) => {
+    [signInUser.fulfilled]: (state, action) => {
       state.token = action.payload;
       state.loading = false;
     },
-    [SignIn.rejected]: (state, action) => {
+    [signInUser.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },

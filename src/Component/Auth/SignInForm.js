@@ -3,7 +3,9 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { SignIn } from "../../Redux/Slice/UserSlice";
+import { signInUser } from "../../Redux/Slice/UserSlice";
+import { adminSignIn } from "../../Redux/Slice/AdminSlice";
+import { useLocation } from "react-router-dom";
 
 const Schema = Yup.object().shape({
   email: Yup.string()
@@ -16,13 +18,19 @@ const Schema = Yup.object().shape({
 
 export default function SignInForm() {
   const dispatch = useDispatch();
-  const isLoading = useSelector((state) => state?.users?.loading);
-  console.log(444, isLoading);
+  const isLoadingUser = useSelector((state) => state?.users?.loading);
+  const isLoadingAdmin = useSelector((state) => state?.admin?.loading);
+  const location = useLocation();
+
   return (
     <div className="w-25 m-auto">
       <div className="row mb-2">
         <div className="col-lg-12 text-center">
-          <h1 className="mt-5">User Login</h1>
+          <h1 className="mt-5">
+            {location.pathname == "/logInUserForm"
+              ? "User Login"
+              : "Admin Login"}
+          </h1>
         </div>
       </div>
       <div className="row">
@@ -31,7 +39,9 @@ export default function SignInForm() {
             validationSchema={Schema}
             initialValues={{ email: "", password: "" }}
             onSubmit={(values) => {
-              dispatch(SignIn(values));
+              if (location.pathname == "/logInUserForm")
+                dispatch(signInUser(values));
+              else dispatch(adminSignIn(values));
             }}
           >
             {({
@@ -62,7 +72,6 @@ export default function SignInForm() {
                     className="invalid-feedback"
                   />
                 </div>
-
                 <div className="form-group mb-3">
                   <label htmlFor="password">Password</label>
                   <Field
@@ -82,14 +91,19 @@ export default function SignInForm() {
                     className="invalid-feedback"
                   />
                 </div>
-
                 <Button
                   type="submit"
                   variant="warning"
                   className="btn-position-change"
-                  disabled={isLoading}
+                  disabled={isLoadingUser || isLoadingAdmin}
                 >
-                  {isLoading ? "Please wait..." : "Submit"}
+                  {location.pathname == "/logInUserForm"
+                    ? isLoadingUser
+                      ? "Please wait..."
+                      : "Submit"
+                    : isLoadingAdmin
+                    ? "Please wait..."
+                    : "Submit"}
                 </Button>
               </Form>
             )}

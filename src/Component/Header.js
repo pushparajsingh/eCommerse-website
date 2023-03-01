@@ -57,7 +57,6 @@ const Header = () => {
                     : "header-span"
                 }
               >
-                {" "}
                 About Us
               </span>
             </Link>
@@ -89,13 +88,13 @@ const Header = () => {
             <Dropdown.Divider />
             <Dropdown.Item
               eventKey="4"
-              onClick={() => navigate("/loginInUserForm")}
+              onClick={() => navigate("/logInUserForm")}
             >
               User Login
             </Dropdown.Item>
             <Dropdown.Item
               eventKey="4"
-              onClick={() => navigate("/loginInAdminForm")}
+              onClick={() => navigate("/logInAdminForm")}
             >
               Admin Login
             </Dropdown.Item>
