@@ -18,15 +18,53 @@ export const adminSignIn = createAsyncThunk(
     }
   }
 );
+
 export const getProduct = createAsyncThunk(
   "get/getProduct",
-  async (data, { rejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
       const response = await instance.get("get");
+
       if (response.data.post) {
         return response.data.post;
       }
     } catch (err) {
+      return rejectWithValue(err.message);
+    }
+  }
+);
+
+export const deleteProduct = createAsyncThunk(
+  "delete/deleteProduct",
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await instance.delete(`delete/${id}`);
+      if (response.data.message) {
+        return response.data.message;
+      }
+    } catch (err) {
+      return rejectWithValue(err.message);
+    }
+  }
+);
+
+export const updateProduct = createAsyncThunk(
+  "update/updateProduct",
+  async ({ id, data }, rejectWithValue) => {
+    console.log("data show ", data.image);
+    try {
+      let formData = new FormData();
+      formData.append("title", data.title);
+      formData.append("price", data.price);
+      formData.append("description", data.description);
+      formData.append("image", data.image);
+      const response = await instance.put(`update/${id}`, formData);
+      console.log("response", response);
+      if (response.data.message) {
+        return response.data.message;
+      }
+    } catch (err) {
+      console.log(555, err);
       return rejectWithValue(err.message);
     }
   }
@@ -50,17 +88,37 @@ export const AdminSlice = createSlice({
       state.loading = false;
     },
     [adminSignIn.rejected]: (state, action) => {
-      state.loading = false;
       state.error = action.payload;
-    },
-    [getProduct.pending]: (state, action) => {
-      state.loading = true;
+      state.loading = false;
     },
     [getProduct.fulfilled]: (state, action) => {
       state.productData = action.payload;
       state.loading = false;
     },
+    [getProduct.pending]: (state, action) => {
+      state.loading = true;
+    },
     [getProduct.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    [deleteProduct.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [deleteProduct.fulfilled]: (state, action) => {
+      state.loading = false;
+    },
+    [deleteProduct.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    [updateProduct.fulfilled]: (state, action) => {
+      state.loading = false;
+    },
+    [updateProduct.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [updateProduct.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
