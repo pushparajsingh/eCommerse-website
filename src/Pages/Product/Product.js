@@ -14,6 +14,7 @@ const Product = () => {
   const Add_To_Cart = () => {
     dispatch();
   };
+
   return (
     <>
       <Sidebar />

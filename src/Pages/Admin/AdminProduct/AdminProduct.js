@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Modal, Form } from "react-bootstrap";
 import Table from "react-bootstrap/Table";
 import { useDispatch, useSelector } from "react-redux";
+import TableNoRecordFound from "../../../Component/TableNoRecordFound/TableNoRecordFound";
 
 import {
   getProduct,
@@ -12,9 +13,12 @@ import "./AdminProduct.scss";
 
 const AdminProduct = () => {
   const dispatch = useDispatch();
-  const { allProduct } = useSelector((state) => {
+  const { allProduct, status, isLoading, error } = useSelector((state) => {
     return {
       allProduct: state?.admin?.productData,
+      status: state?.admin?.message,
+      isLoading: state?.admin?.loading,
+      error: state?.admin?.error,
     };
   });
   const [show, setShow] = useState(false);
@@ -30,11 +34,12 @@ const AdminProduct = () => {
 
   useEffect(() => {
     dispatch(getProduct());
-  }, []);
+  }, [status]);
 
-  const update = (id) => {
+  const update = (id, item) => {
     setId(id);
     handleShow();
+    setData(item);
   };
 
   const saveChanges = () => {
@@ -47,9 +52,16 @@ const AdminProduct = () => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
+  const addProduct = () => {};
   return (
     <div>
       <div className="box">
+        <Button
+          className="btn btn-warning Click-Me mt-2 mb-2"
+          onClick={addProduct}
+        >
+          Add Product
+        </Button>
         <Table striped="columns">
           <thead>
             <tr>
@@ -61,34 +73,40 @@ const AdminProduct = () => {
             </tr>
           </thead>
           <tbody>
-            {allProduct?.map((item, i) => (
-              <tr key={i}>
-                <td>{++i}</td>
-                <td>{item.title}</td>
-                <td>{item.price}</td>
-                <td className="word-wrap text-break">{item.description}</td>
-                <td>
-                  <img src={item.image} width={100} height={100} />
-                </td>
-                <td>
-                  <div className="mt-4">
-                    <Button
-                      onClick={() => dispatch(deleteProduct(item._id))}
-                      className="btn btn-danger"
-                    >
-                      Delete
-                    </Button>
-                    &nbsp;
-                    <Button
-                      className="btn btn-warning"
-                      onClick={() => update(item._id)}
-                    >
-                      Update
-                    </Button>
-                  </div>
-                </td>
-              </tr>
-            ))}
+            {!isLoading &&
+              allProduct?.map((item, i) => (
+                <tr key={i}>
+                  <td>{++i}</td>
+                  <td>{item.title}</td>
+                  <td>{item.price}</td>
+                  <td className="word-wrap text-break">{item.description}</td>
+                  <td>
+                    <img src={item.image} width={100} height={100} />
+                  </td>
+                  <td>
+                    <div className="mt-4">
+                      <Button
+                        onClick={() => dispatch(deleteProduct(item._id))}
+                        className="btn btn-danger"
+                      >
+                        Delete
+                      </Button>
+                      &nbsp;
+                      <Button
+                        className="btn btn-warning"
+                        onClick={() => update(item._id, item)}
+                      >
+                        Update
+                      </Button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+
+            {!allProduct.length ||
+              (isLoading && (
+                <TableNoRecordFound colspan={6} loading={isLoading} />
+              ))}
           </tbody>
         </Table>
       </div>
@@ -97,6 +115,16 @@ const AdminProduct = () => {
           <Modal.Title>Update Product Details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          <img
+            src={
+              typeof data.image === "object"
+                ? URL.createObjectURL(data.image)
+                : data.image
+            }
+            width={100}
+            height={100}
+            style={{ borderRadius: "2rem", marginLeft: "40%" }}
+          />
           <Form>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Title</Form.Label>
@@ -104,6 +132,7 @@ const AdminProduct = () => {
                 type="text"
                 placeholder="Enter Title"
                 name="title"
+                value={data.title}
                 onChange={handleChange}
               />
             </Form.Group>
@@ -114,6 +143,7 @@ const AdminProduct = () => {
                 type="text"
                 placeholder="Description"
                 name="description"
+                value={data.description}
                 onChange={handleChange}
               />
             </Form.Group>
@@ -123,6 +153,7 @@ const AdminProduct = () => {
                 type="number"
                 placeholder="Price"
                 name="price"
+                value={data.price}
                 onChange={handleChange}
               />
             </Form.Group>
