@@ -56,7 +56,7 @@ const SignUpForm = () => {
                     className="form-control"
                   />
                   {errors.firstName && touched.firstName ? (
-                    <div>{errors.firstName}</div>
+                    <div className="error-color">{errors.firstName}</div>
                   ) : null}
                 </div>
                 <div className="mb-3">
@@ -67,7 +67,7 @@ const SignUpForm = () => {
                     className="form-control"
                   />
                   {errors.email && touched.email ? (
-                    <div>{errors.email}</div>
+                    <div className="error-color">{errors.email}</div>
                   ) : null}
                 </div>
                 <div className="mb-3">
@@ -78,7 +78,7 @@ const SignUpForm = () => {
                     className="form-control"
                   />
                   {errors.password && touched.password ? (
-                    <div>{errors.password}</div>
+                    <div className="error-color">{errors.password}</div>
                   ) : null}
                 </div>
                 <div className="mb-3">
@@ -89,7 +89,7 @@ const SignUpForm = () => {
                     className="form-control"
                   />
                   {errors.cPassword && touched.cPassword ? (
-                    <div>{errors.cPassword}</div>
+                    <div className="error-color">{errors.cPassword}</div>
                   ) : null}
                 </div>
                 <Button

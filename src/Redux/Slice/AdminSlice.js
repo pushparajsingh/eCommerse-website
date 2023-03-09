@@ -6,7 +6,6 @@ export const adminSignIn = createAsyncThunk(
   "post/userSignIn",
   async (data, { rejectWithValue }) => {
     try {
-      debugger;
       const response = await instance.post("login", data);
       if (response?.data) {
         localStorage.setItem("Token", JSON.stringify(response.data.token));
@@ -67,6 +66,30 @@ export const updateProduct = createAsyncThunk(
   }
 );
 
+export const addAdminProduct = createAsyncThunk(
+  "post/addProduct",
+  async (data, rejectWithValue) => {
+    console.log(777, data);
+    try {
+      let formData = new FormData();
+      formData.append("title", data.title);
+      formData.append("price", data.price);
+      formData.append("description", data.description);
+      formData.append("image", data.image);
+      const response = await instance.post("post", formData);
+      console.log(777, response.data.message);
+      if (response.data.message) {
+        toast(response.data.message);
+        return response.data.message;
+      }
+    } catch (err) {
+      toast(err.response.data.error);
+      // console.log(err.response.data.error);
+      return rejectWithValue(err.message);
+    }
+  }
+);
+
 export const AdminSlice = createSlice({
   name: "counter",
   initialState: {
@@ -89,12 +112,12 @@ export const AdminSlice = createSlice({
       state.error = action.payload;
       state.loading = false;
     },
+    [getProduct.pending]: (state, action) => {
+      state.loading = true;
+    },
     [getProduct.fulfilled]: (state, action) => {
       state.productData = action.payload;
       state.loading = false;
-    },
-    [getProduct.pending]: (state, action) => {
-      state.loading = true;
     },
     [getProduct.rejected]: (state, action) => {
       state.loading = false;
@@ -102,25 +125,35 @@ export const AdminSlice = createSlice({
     },
     [deleteProduct.pending]: (state, action) => {
       state.loading = true;
-      state.message = "";
     },
     [deleteProduct.fulfilled]: (state, action) => {
       state.loading = false;
-      state.message = action.payload;
+      state.message += action.payload;
     },
     [deleteProduct.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
+    [updateProduct.pending]: (state, action) => {
+      state.loading = true;
+    },
     [updateProduct.fulfilled]: (state, action) => {
       state.loading = false;
-      state.message = action.payload;
+      state.message += action.payload;
     },
-    [updateProduct.pending]: (state, action) => {
+    [updateProduct.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    [addAdminProduct.pending]: (state, action) => {
       state.loading = true;
       state.message = " ";
     },
-    [updateProduct.rejected]: (state, action) => {
+    [addAdminProduct.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.message += action.payload;
+    },
+    [addAdminProduct.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },

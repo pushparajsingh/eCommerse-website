@@ -10,10 +10,12 @@ import {
 import DMART from "../Assert/Image/DMART.png";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AiOutlineShoppingCart } from "react-icons/ai";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const Quantity = useSelector((state) => state?.users?.quantity);
 
   return (
     <>
@@ -65,7 +67,7 @@ const Header = () => {
             className="p-1 bg-danger rounded-circle counter"
             style={{ cursor: "pointer" }}
           >
-            1
+            {Quantity ? Quantity : 0}
           </span>
           <AiOutlineShoppingCart
             className="display-6"

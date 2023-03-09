@@ -1,20 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Sidebar from "../../Component/Sidebar";
-import { getEcommerseProduct } from "../../Redux/Slice/UserSlice";
+import { getEcommerseProduct, addItem } from "../../Redux/Slice/UserSlice";
 import { Button, Card } from "react-bootstrap";
+import { addCart } from "../../Redux/Slice/UserSlice";
+import Quantity from "../../Component/Quantity/Quantity";
 
 const Product = () => {
   const dispatch = useDispatch();
   const getData = useSelector((state) => state?.users?.allUserProduct);
+  // const [quantityData, setQuantity] = useState();
   useEffect(() => {
     dispatch(getEcommerseProduct());
   }, []);
 
-  const Add_To_Cart = () => {
-    dispatch();
-  };
+  // const Add_To_Cart = () => {
+  //   dispatch(addItem(quantityData));
+  // };
 
+  // const quantityProduct = useCallback((Quantity, id) => {
+  //   setQuantity({ Quantity, id });
+  // }, []);
+  // console.log(666, quantityData);
   return (
     <>
       <Sidebar />
@@ -40,10 +47,7 @@ const Product = () => {
                   <p className="text-nowrap overflow-hidden">
                     &nbsp;&nbsp;{item.description}
                   </p>
-                  <Button variant="secondary" onClick={() => Add_To_Cart()}>
-                    Add To Cart
-                  </Button>{" "}
-                  <Button variant="warning">Buy Now</Button>
+                  <Quantity ids={item._id} />
                 </Card.Text>
               </Card.Body>
             </Card>

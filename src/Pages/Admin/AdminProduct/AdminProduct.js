@@ -8,23 +8,28 @@ import {
   getProduct,
   deleteProduct,
   updateProduct,
+  addAdminProduct,
 } from "../../../Redux/Slice/AdminSlice";
 import "./AdminProduct.scss";
 
 const AdminProduct = () => {
   const dispatch = useDispatch();
-  const { allProduct, status, isLoading, error } = useSelector((state) => {
+  const [show, setShow] = useState(false);
+  const [id, setId] = useState();
+  const [toggle, setToggle] = useState(false);
+  const handleClose = () => {
+    setShow(false);
+    setToggle(false);
+  };
+  const handleShow = () => setShow(true);
+  const { allProduct, isLoading, status, error } = useSelector((state) => {
     return {
       allProduct: state?.admin?.productData,
-      status: state?.admin?.message,
       isLoading: state?.admin?.loading,
+      status: state?.admin?.message,
       error: state?.admin?.error,
     };
   });
-  const [show, setShow] = useState(false);
-  const [id, setId] = useState();
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
   const [data, setData] = useState({
     title: "",
     price: "",
@@ -52,7 +57,16 @@ const AdminProduct = () => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
-  const addProduct = () => {};
+  const addProduct = () => {
+    handleShow();
+    setData(" ");
+    setToggle(true);
+  };
+
+  const addProductPost = () => {
+    handleClose();
+    dispatch(addAdminProduct(data));
+  };
   return (
     <div>
       <div className="box">
@@ -103,15 +117,18 @@ const AdminProduct = () => {
                 </tr>
               ))}
 
-            {!allProduct.length ||
-              (isLoading && (
-                <TableNoRecordFound colspan={6} loading={isLoading} />
-              ))}
+            {(!allProduct.length || error || isLoading) && (
+              <TableNoRecordFound
+                colspan={6}
+                loading={isLoading}
+                error={error}
+              />
+            )}
           </tbody>
         </Table>
       </div>
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
+      <Modal show={show}>
+        <Modal.Header>
           <Modal.Title>Update Product Details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -124,7 +141,10 @@ const AdminProduct = () => {
             width={100}
             height={100}
             style={{ borderRadius: "2rem", marginLeft: "40%" }}
+            alt="Select Image"
+            title="Image"
           />
+
           <Form>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Title</Form.Label>
@@ -157,6 +177,7 @@ const AdminProduct = () => {
                 onChange={handleChange}
               />
             </Form.Group>
+            <p>&nbsp;Price Should be in between 1 to 10</p>
             <Form.Group className="mb-3" controlId="formBasicPassword">
               <Form.Label>Select Image</Form.Label>
               <Form.Control
@@ -177,8 +198,11 @@ const AdminProduct = () => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={saveChanges}>
-            Save Changes
+          <Button
+            variant="primary"
+            onClick={toggle ? addProductPost : saveChanges}
+          >
+            {toggle ? "Add Product" : "Save Changes"}
           </Button>
         </Modal.Footer>
       </Modal>
