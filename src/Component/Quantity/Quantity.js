@@ -9,7 +9,7 @@ import { addItem } from "../../Redux/Slice/UserSlice";
 const Quantity = (props) => {
   const [productNumber, setProductNumber] = useState(0);
   const dispatch = useDispatch();
-  // props.Quantity(productNumber, props.ids);
+
   return (
     <>
       <AiFillMinusSquare
@@ -25,9 +25,10 @@ const Quantity = (props) => {
       />
       <Button
         variant="secondary"
-        onClick={() =>
-          dispatch(addItem({ quantity: productNumber, itemId: props.ids }))
-        }
+        onClick={() => {
+          dispatch(addItem({ quantity: productNumber, itemId: props.ids }));
+          setProductNumber(0);
+        }}
       >
         Add To Cart
       </Button>{" "}

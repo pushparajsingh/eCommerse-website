@@ -55,8 +55,24 @@ export const addItem = createAsyncThunk(
       if (response) {
         let count = 0;
         response.data.items.map((i) => (count += i.quantity));
-        console.log("Total Quantity", count);
         toast.success("Product Added Successfully");
+        return count;
+      }
+    } catch (err) {
+      toast.error(err.response.data.error);
+      return rejectWithValue(err.response.data.error);
+    }
+  }
+);
+
+export const totalItem = createAsyncThunk(
+  "get/totalItem",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await instance.get("cart/get");
+      if (response) {
+        let count = 0;
+        response.data.items.map((i) => (count += i.quantity));
         return count;
       }
     } catch (err) {
@@ -78,6 +94,7 @@ export const UserSlice = createSlice({
     createPost: "",
     loading: false,
     quantity: 0,
+    totalQuantity: 0,
   },
 
   extraReducers: {
@@ -119,6 +136,13 @@ export const UserSlice = createSlice({
       state.quantity = action.payload;
     },
     [addItem.rejected]: (state, action) => {
+      state.error = action.payload;
+    },
+    [totalItem.pending]: (state, action) => {},
+    [totalItem.fulfilled]: (state, action) => {
+      state.totalQuantity = action.payload;
+    },
+    [totalItem.rejected]: (state, action) => {
       state.error = action.payload;
     },
   },

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Navbar,
   Nav,
@@ -10,12 +10,20 @@ import {
 import DMART from "../Assert/Image/DMART.png";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AiOutlineShoppingCart } from "react-icons/ai";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { totalItem } from "../Redux/Slice/UserSlice";
 
 const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const Quantity = useSelector((state) => state?.users?.quantity);
+  const dispatch = useDispatch();
+  const { quantity: Quantity, totalQuantity: tQuantity } = useSelector(
+    (state) => state?.users
+  );
+
+  useEffect(() => {
+    dispatch(totalItem());
+  }, [Quantity]);
 
   return (
     <>
@@ -67,7 +75,7 @@ const Header = () => {
             className="p-1 bg-danger rounded-circle counter"
             style={{ cursor: "pointer" }}
           >
-            {Quantity ? Quantity : 0}
+            {tQuantity ? tQuantity : 0}
           </span>
           <AiOutlineShoppingCart
             className="display-6"

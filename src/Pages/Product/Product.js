@@ -8,25 +8,44 @@ import Quantity from "../../Component/Quantity/Quantity";
 
 const Product = () => {
   const dispatch = useDispatch();
+  const [searchData, setSearchData] = useState();
   const getData = useSelector((state) => state?.users?.allUserProduct);
-  // const [quantityData, setQuantity] = useState();
+  const [state, setState] = useState();
+
   useEffect(() => {
     dispatch(getEcommerseProduct());
   }, []);
 
-  // const Add_To_Cart = () => {
-  //   dispatch(addItem(quantityData));
-  // };
+  useEffect(() => {
+    filterData();
+  }, []);
 
-  // const quantityProduct = useCallback((Quantity, id) => {
-  //   setQuantity({ Quantity, id });
-  // }, []);
-  // console.log(666, quantityData);
+  const filterData = () => {
+    let data = getData?.filter((item) => {
+      let titleSearchObj = searchData
+        ? searchData.toLowerCase() == item.title.toLowerCase()
+        : true;
+      return titleSearchObj;
+    });
+
+    setState(data);
+  };
+
+  function clearData() {
+    setSearchData(undefined);
+    filterData();
+  }
+
   return (
     <>
-      <Sidebar />
+      <Sidebar
+        searchData={setSearchData}
+        filterDataFun={filterData}
+        Clear={clearData}
+        setValue={searchData}
+      />
       <div className="float-end content ">
-        {getData?.map((item) => (
+        {state?.map((item) => (
           <div key={item._id}>
             <Card className="cardSize">
               <img
